@@ -1,32 +1,44 @@
-// SmartGreenhouse.ino
+// Improved SmartGreenhouse.ino code
+
+#include <WiFi.h>
+#include <ArduinoJson.h>
+
+// Constants
+const char* ssid = "your_SSID";
+const char* password = "your_PASSWORD";
+
+// Pin definitions
+const int pumpPin = 5;
 
 void setup() {
-    // Initialization code
-}
-
-void startPump() {
-    digitalWrite(PUMP_PIN, LOW); // Start the pump with LOW signal
-}
-
-void stopPump() {
-    digitalWrite(PUMP_PIN, HIGH); // Stop the pump with HIGH signal
-}
-
-int readWaterLevel() {
-    return !digitalRead(WATER_LEVEL_SENSOR_PIN); // Inverted read for water level sensor
-}
-
-float humPudyProc(float humidity) {
-    // Process humidity as float
-    return humidity * 1.0; // Example operation
+    Serial.begin(115200);
+    setupWiFi();
+    pinMode(pumpPin, OUTPUT);
 }
 
 void loop() {
-    // Main code loop
-    if (readWaterLevel()) {
-        startPump();
-    } else {
-        stopPump();
+    // Implement your logic here
+}
+
+void setupWiFi() {
+    Serial.print("Connecting to WiFi...");
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.print(".");
     }
-    // Additional logic can go here
+    Serial.println("Connected to WiFi!");
+}
+
+void startPump() {
+    Serial.println("Starting pump...");
+    digitalWrite(pumpPin, HIGH);
+    delay(2000); // Run for 2 seconds
+    Serial.println("Pump started safely.");
+}
+
+void stopPump() {
+    Serial.println("Stopping pump...");
+    digitalWrite(pumpPin, LOW);
+    Serial.println("Pump stopped safely.");
 }
